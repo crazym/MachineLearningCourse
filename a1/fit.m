@@ -19,6 +19,8 @@ for K = 1:12
     hold on;
 end
 legend(legendInfo)
+xlabel('x')
+ylabel('y')
 title('Fitted model for x = [-2.1:0.1:2.1] in different K')
 
 % error plot on training data
