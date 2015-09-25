@@ -1,0 +1,9 @@
+Error Plot on Trainning Data:
+    From the prespective on total error, those models with less Total Error E should be "good" models, so I would choose K = 12. (as it minimizes E = norm(y - f(x)))
+
+Error Plot on Test Data:
+    The slope of the two plots are in opposite order: total error on Training data are going down as degree K goes up, while on Test Data E goes down first and stay stable for a few K's then go up rapidly in the next step. 
+
+    When K = 11 and/or K = 12, total error E tends to be small on training data and considerably high on test Data, so I could say it "overfit" the training data.
+
+    when K = 4, E is 5.5159 on training data and 5.3305 on Test Data and have the smallest difference among E for all other degrees. Therefore, I would guess a polynomial of degree 4 was used to generate the training and test data.

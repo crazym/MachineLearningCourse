@@ -14,31 +14,31 @@ w=.75;
 b=2;
 
 % Let's get a few locations randomly along this line between x=0 and x=5;
-
-x=5*rand(15,1)   % Get 15 random x locations between 0 and 5
-	
-y=(w*x)+b	  % Compute the exact value of y from the line equation
+% 
+% x=5*rand(15,1)   % Get 15 random x locations between 0 and 5
+% 	
+% y=(w*x)+b	  % Compute the exact value of y from the line equation
 
 % Plot the noiseless data
 
-figure(1);clf;
-plot(x,y,'bo');hold on;
-title('Data sampled from a line. Blue is noiseless, magenta is with noise');
-
-% Looks nice, but unfortunately we don't generally work with perfect
-% data, sources of error: Measurement problems, transmission distortion,
-% random noise or influences from the environment.
-
-%% We will look at typical noise models later on, in particular, we will
-% use Gaussian functions to model nose quite often. Let's for now
-% use Matlab to generate some random Gaussian noise, with mean of
-% zero and a standard deviation of .1 
-
-y_noisy=y+(.1*randn(length(y),1));
-
-% Plot it on the same figure in red to see what it looks like
-
-plot(x,y_noisy,'ms');
+% figure(1);clf;
+% plot(x,y,'bo');hold on;
+% title('Data sampled from a line. Blue is noiseless, magenta is with noise');
+% 
+% % Looks nice, but unfortunately we don't generally work with perfect
+% % data, sources of error: Measurement problems, transmission distortion,
+% % random noise or influences from the environment.
+% 
+% %% We will look at typical noise models later on, in particular, we will
+% % use Gaussian functions to model nose quite often. Let's for now
+% % use Matlab to generate some random Gaussian noise, with mean of
+% % zero and a standard deviation of .1 
+% 
+% y_noisy=y+(.1*randn(length(y),1));
+% 
+% % Plot it on the same figure in red to see what it looks like
+% 
+% plot(x,y_noisy,'ms');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -56,6 +56,9 @@ plot(x,y_noisy,'ms');
 % Question: Do all the functions approximate the data equally well?
 %           what is going on here?
 %           Is there a point at which Matlab complains about something?
+% 10th poly: Polynomial is badly conditioned.
+% Add points with distince X values, select a polynomial with a lower
+% degree, or select "Center and scale data"
 %          
 % - Now, select the data source corresponding to the MAGENTA points
 % - Try the linear fit again
@@ -64,7 +67,7 @@ plot(x,y_noisy,'ms');
 % Question: Are the results similar to the noiseless case? can all
 %           functions approximate the data equally well?
 %           if not, which function does a better job?
-%
+% No, approximation curves varies a lot
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
