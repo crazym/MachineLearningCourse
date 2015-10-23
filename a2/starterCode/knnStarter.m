@@ -20,7 +20,6 @@ for k = 3:2:21
     num_error = 0;
 
     for i = 1:(n1+n2)
-    %     c1_test(:, i)
         class = knnClassify(testInputs(:, i)', k, trainingInputs', trainingTargets');
         if class ~= testTargets(:, i)'
             num_error = num_error + 1;
@@ -51,7 +50,6 @@ for k = 3:2:21
     num_error = 0;
 
     for i = 1:(n1+n2)
-    %     c1_test(:, i)
         class = knnClassify(testInputs(:, i)', k, trainingInputs', trainingTargets');
         if class ~= testTargets(:, i)'
             num_error = num_error + 1;
@@ -74,7 +72,6 @@ for k = 3:2:21
     num_error = 0;
 
     for i = 1:size(inputs_test, 2)
-    %     c1_test(:, i)
         class = knnClassify(inputs_test(:, i)', k, inputs_train', target_train');
         if class ~= target_test(:, i)'
             num_error = num_error + 1;
@@ -97,7 +94,6 @@ for k = 3:2:21
     num_error = 0;
 
     for i = 1:size(inputs_test, 2)
-    %     c1_test(:, i)
         class = knnClassify(inputs_test(:, i)', k, inputs_train', target_train');
         if class ~= target_test(:, i)'
             num_error = num_error + 1;

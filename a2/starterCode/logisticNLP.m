@@ -16,11 +16,6 @@ function [ll, dll_dw, dll_db] = logisticNLP(x1, x2, w, b, alpha)
 
 % YOUR CODE GOES HERE.
 
-%     x1
-%     x2
-%     w 
-%     b
-%     alpha
     sigmoid1 = logistic(x1, w, b);
     sigmoid2 = logistic(x2, w, b);
 

@@ -14,7 +14,6 @@ x2 = c2_train';
 [p1, m1, m2, C1, C2] = learnGCCmodel(x1, x2);
 
 for i = 1:size(c1_test, 2)
-%     c1_test(:, i)
     class = gccClassify(c1_test(:, i), p1, m1, m2, C1, C2);
     plot(c1_test(1, i),c1_test(2, i), 'bx');hold on;
     if class ~= [1 0]
@@ -23,7 +22,6 @@ for i = 1:size(c1_test, 2)
 end
 
 for i = 1:size(c2_test, 2)
-%     c1_test(:, i)
     class = gccClassify(c2_test(:, i), p1, m1, m2, C1, C2)
     plot(c2_test(1, i),c2_test(2, i), 'go');hold on;
     if class ~= [0 1]
@@ -47,7 +45,6 @@ x2 = c2_train';
 [p1, m1, m2, C1, C2] = learnGCCmodel(x1, x2);
 
 for i = 1:size(c1_test, 2)
-%     c1_test(:, i)
     class = gccClassify(c1_test(:, i), p1, m1, m2, C1, C2);
     plot(c1_test(1, i),c1_test(2, i), 'bx');hold on;
     if class ~= [1 0]
@@ -56,7 +53,6 @@ for i = 1:size(c1_test, 2)
 end
 
 for i = 1:size(c2_test, 2)
-%     c1_test(:, i)
     class = gccClassify(c2_test(:, i), p1, m1, m2, C1, C2)
     plot(c2_test(1, i),c2_test(2, i), 'go');hold on;
     if class ~= [0 1]

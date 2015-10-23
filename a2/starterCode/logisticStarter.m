@@ -1,7 +1,6 @@
 % Use learnLogReg() to test performance on various datasets.
 figure(1);clf;
 
-
 load('a2/dataSets/generic1');
 
 x1 = c1_train;
