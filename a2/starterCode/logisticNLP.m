@@ -10,11 +10,8 @@ function [ll, dll_dw, dll_db] = logisticNLP(x1, x2, w, b, alpha)
 % Outputs:
 %   ll - negative log probability (likelihood) for the data 
 %        conditioned on the model (ie w).
-%   dll_dw - gradient of negative log data likelihood wrt b
+%   dll_dw - gradient of negative log data likelihood wrt w
 %   dll_db - gradient of negative log data likelihood wrt b
-
-
-
 
 
 % YOUR CODE GOES HERE.

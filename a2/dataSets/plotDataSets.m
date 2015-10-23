@@ -4,13 +4,13 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% For the first two datasets, the exemplars of each class are 
 %  in separate files
-load generc1
+load generic1
 figure(1); clf; hold on;
 plot(c1_train(1,:),c1_train(2,:),'ro')
 plot(c2_train(1,:),c2_train(2,:),'bx')
 legend({'class 1','class 2'});
 
-load generc2
+load generic2
 figure(2); clf; hold on;
 plot(c1_train(1,:),c1_train(2,:),'ro')
 plot(c2_train(1,:),c2_train(2,:),'bx')
