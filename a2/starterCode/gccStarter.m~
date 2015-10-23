@@ -67,7 +67,7 @@ end
 xlabel('x');
 ylabel('y');
 legend('C1','C2');
-title('GCC fitting generic2');
+title('GCC fitting generic1');
 
 % ==============================================================
 

@@ -14,13 +14,13 @@ function  [w,b] = learnLogReg(x1,x2,alpha)
 %  Initialize the weights and bias.  The weights w are a vector whose dimension 
 %  will depend on the dimension of each training exempla and the bias b is a scalar
 
-w = ... 
-b = ...
+w = zeros(size(x1, 1), 1); 
+b = 10;
 
 % Set this to one in order to (roughly) check whether your gradient is correct.
 % Set to zero if you're confident that they're correct and you want 
 % to skip the check
-checkGradient = 1;
+checkGradient = 0;
 
 %%%% TODO 2: you need to implement the function, logisticNLP, that takes
 %%%% data x1 and x2 from classes 1 and 2, and the weight vector w, 
@@ -30,7 +30,7 @@ checkGradient = 1;
 %%%% loop, but you should look at the code to make sure you understand it.
 
 % Initial negative log-likelihood and gradient
-[ll,dll_dw,dll_db] = logisticNLP(x1,x2,w,alpha);
+[ll,dll_dw,dll_db] = logisticNLP(x1,x2,w,b,alpha);
 
 % Use finite differences to compare numerical and analytical gradients.
 if checkGradient
@@ -51,6 +51,7 @@ if checkGradient
     disp(fd_dll_db)
     disp('These should be nearly identical (i.e., within 1%)')
     pause
+    
 end
 
 % Initial step-size

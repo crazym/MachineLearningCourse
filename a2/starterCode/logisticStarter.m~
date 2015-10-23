@@ -62,7 +62,6 @@ end
 
 plot(g2E(:, 1), g2E(:, 2), '--bs');
 hold on;
-
 % =======================================================
 load('a2/dataSets/fruit_train');
 load('a2/dataSets/fruit_test');
@@ -87,10 +86,10 @@ for i = 1:numel(alphas)
             num_error = num_error + 1;
         end
     end
-    E = [E; alphas(i) num_error/size(inputs_test, 2)];
+    g2E = [g2E; alphas(i) num_error/size(inputs_test, 2)];
 end
 
-plot(E(:, 1), E(:, 2), '--go');
+plot(g2E(:, 1), g2E(:, 2), '--go');
 hold on;
 % =======================================================
 load('a2/dataSets/mnist_train');

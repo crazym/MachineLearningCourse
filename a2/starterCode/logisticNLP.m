@@ -16,5 +16,29 @@ function [ll, dll_dw, dll_db] = logisticNLP(x1, x2, w, b, alpha)
 
 % YOUR CODE GOES HERE.
 
+%     x1
+%     x2
+%     w 
+%     b
+%     alpha
+    sigmoid1 = logistic(x1, w, b);
+    sigmoid2 = logistic(x2, w, b);
 
+    n1 = size(x1, 2);
+    n2 = size(x2, 2);
+
+    x = [x1 x2];
+    y = [ones(1, n1) zeros(1, n2)];
+
+    
+    % since yi is either 0 or 1
+    ll=(1/2*alpha) * (w)' * w - (sum(log(sigmoid1)) + sum(log(1 - sigmoid2)));
+    
+    % find w
+    dll_dw = w/alpha - x * (y - [sigmoid1 sigmoid2])';
+    
+    % find b
+    dll_db = - sum(y - [sigmoid1 sigmoid2]);
+
+end
 
