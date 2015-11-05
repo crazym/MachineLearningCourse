@@ -8,7 +8,7 @@ plot(1:999,p1,'-r');
 plot(1:999,p2,'-g');
 plot(1:999,p3,'-b');
 xlabel('L - largest ID number');
-ylabel('P(L|X_{1:N}) - posterior probability');
+ylabel('P(L|X_{1:N}) - posterior probability');  
 title('Q4 - Posterior distribution of P(L|X_{1:N}) regarding different N');
 legend('N = 1','N = 10','N = 100');
 
