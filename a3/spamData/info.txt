@@ -1,0 +1,35 @@
+
+=========
+Spam data
+=========
+
+1. The Data
+
+This data set comes from a collection of 5000 personal email messages, 
+1000 which are used for the training set, and 4000 for the test set.
+
+Each spam message was reduced to 185 binary features. The text strings
+associated with these 185 features are included in the "feature_names"
+variables. Each message is thus represented by a vector of 185 binary
+values, i.e., a row in the "data_train" and "data_train" vectors. Your
+goal is to learn two classifiers that takes a 185-vector and returns a
+class label. One classifier will use Logistic Regression, and one will
+use Naiïve Bayes.
+
+The "labels_test" and "labels_train" data sets are binary features
+indicating which of the emails are spam and which are ham. We'll leave
+it to you to figure out whether 0 or 1 indicates "spam." (Feel free to
+discuss whether it's 0 or 1 on the online bulletin board.)
+
+Thanks to Sam Roweis for providing this data.
+
+
+2. MATLAB hints:
+
+You can use the "find" command to separate the training sets, e.g.,
+data_train(find(labels_train)==0,:) will give you all the data from
+class 0.
+
+You can use the 'sort' command to find the highest and lowest weights,
+and then get the corresponding indices from the list of labels.
+
