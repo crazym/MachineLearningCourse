@@ -1,4 +1,4 @@
-function P = navie(X, y, data_train, labels_train, alpha, beta)
+function [P, a_1, a_0] = navie(X, y, data_train, labels_train, alpha, beta)
   % regularized form of Navie Baye's classification on C=1
   % X is a M x N matrix, columns are data vectors
   % y is a 1 x N vector, each labels the class of the corresponding data

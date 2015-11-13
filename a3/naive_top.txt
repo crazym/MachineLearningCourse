@@ -1,0 +1,43 @@
+top_spam = 
+
+  Columns 1 through 6
+
+    'alternative'    'public'    'quoted'    'transitional'    'alt'    'priority'
+
+  Columns 7 through 10
+
+    'express'    'related'    'microsoft'    'iso'
+
+
+top_spam_weights =
+
+  Columns 1 through 9
+
+    0.3319    0.2781    0.3108    0.1987    0.1871    0.2851    0.2711    0.2104    0.2665
+
+  Column 10
+
+    0.3622
+
+
+top_ham = 
+
+  Columns 1 through 6
+
+    'toronto'    'sam'    'university'    'department'    'date'    'science'
+
+  Columns 7 through 10
+
+    'no_multipart'    'computer'    'research'    'status'
+
+
+top_ham_weights =
+
+  Columns 1 through 9
+
+    0.6014    0.5245    0.3602    0.3584    0.4039    0.3113    0.9002    0.3130    0.2746
+
+  Column 10
+
+    0.2536
+
