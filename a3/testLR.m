@@ -51,15 +51,14 @@ freq_c1 = occur_c1 ./ size(c1, 1);
 diff_freq = freq_c0 - freq_c1;
 
 [~, index] = sort(diff_freq);
-diff_freq(index(1:10));
 % based on the context, we assume label==1 is spam
 % features appears more often in C1 than C0:
 top_spam_index = index(1:10);
 top_spam = feature_names(top_spam_index)'
 top_spam_weights = beta(top_spam_index)'
 
-diff_freq(index(176:185));
 % features appears more often in C0 than C1:
+% reverse the order of the indices (so from highest diff to lower)
 top_ham_index = fliplr(index(176:185));
 top_ham = feature_names(top_ham_index)'
 top_ham_weights = beta(top_ham_index)'
