@@ -20,7 +20,7 @@ testNonIm=testNonIm/255;
 
 % You can display images from eyeIm or nonIm using;
 %
-% imagesc(reshape(eyeIm(:,1),sizeIm));axis image;colormap(gray)
+% imagesc(reshape(eyeIm(:,2),sizeIm));axis image;colormap(gray)
 %  - where of course you would select any column
 
 % We will first see how far we can get with classification
@@ -44,26 +44,26 @@ testClass=[zeros(size(testEyeIm,2),1)
             ones(size(testNonIm,2),1)];
 
 % Compute matrix of pairwise distances (this takes a while...)
-d=som_eucdist2(testSet,trainSet);
-
-% Compute kNN results, I simply chose a reasonable value
-% for K but feel free to change it and play with it...
-K=5;
-[C,P]=knn(d,trainClass,K);
-
-% Compute the class from C (we have 0s and 1s so it is easy)
-class=sum(C,2);	  		% Add how many 1s there are
-class= (class>(K/2));   % Set to 1 if there are more than K/2
-				        % ones. Otherwise it's zero
-
-% Compute classification accuracy: We're interested in 2 numbers:
-% Correct classification rate - how many eyes were classified as eyes
-% False-positive rate: how many non-eyes were classified as eyes
-
-fprintf(2,'Correct classification rate:\n');
-correctEye_knn=length(find(class(1:size(testEyeIm,2))==0))/size(testEyeIm,2)
-fprintf(2,'False positive rate:\n');
-falseEye_knn=length(find(class(size(testEyeIm,2)+1:end)==0))/size(testNonIm,2)
+% d=som_eucdist2(testSet,trainSet);
+% 
+% % Compute kNN results, I simply chose a reasonable value
+% % for K but feel free to change it and play with it...
+% K=5;
+% [C,P]=knn(d,trainClass,K);
+% 
+% % Compute the class from C (we have 0s and 1s so it is easy)
+% class=sum(C,2);	  		% Add how many 1s there are
+% class= (class>(K/2));   % Set to 1 if there are more than K/2
+% 				        % ones. Otherwise it's zero
+% 
+% % Compute classification accuracy: We're interested in 2 numbers:
+% % Correct classification rate - how many eyes were classified as eyes
+% % False-positive rate: how many non-eyes were classified as eyes
+% 
+% fprintf(2,'Correct classification rate:\n');
+% correctEye_knn=length(find(class(1:size(testEyeIm,2))==0))/size(testEyeIm,2)
+% fprintf(2,'False positive rate:\n');
+% falseEye_knn=length(find(class(size(testEyeIm,2)+1:end)==0))/size(testNonIm,2)
 
 % Keep in mind the above figures! (and the kNN process, you'll
 % have to do it again on the dimension-reduced data later on.
@@ -78,7 +78,8 @@ falseEye_knn=length(find(class(size(testEyeIm,2)+1:end)==0))/size(testNonIm,2)
 %%% TO DO:
 % First, compute the mean over the eye and non-eye images
 % i.e. compute the mean eye image, and the mean non-eye image
-
+eyeMean = mean(eyeIm, 2);
+noneyeMean = mean(nonIm, 2);
 %%% TO PRINT:
 % Plot the mean eye and mean non-eye images and hand the
 % printouts in with your report.
@@ -88,11 +89,31 @@ falseEye_knn=length(find(class(size(testEyeIm,2)+1:end)==0))/size(testNonIm,2)
 % training set. You will do this separately for eye images and non-eye 
 % images. This will produce a set of eigenvectors that represent eye 
 % images, and a different set of eigenvectors for non-eye images.
+training_N = size(eyeIm, 2);
+dimension = size(eyeIm, 1);
+K = zeros(dimension);
+for i=1:training_N
+    difference = eyeIm(:, i) - eyeMean;
+    K = K + difference * difference';
+end
+K = K ./ training_N;
+% dies not work since k need to be < n
+% [V, D] = eigs(K, 500, 'lm');
+[V_orig, D_orig] = eig(K);
 
+% refered to:
+% http://www.mathworks.com/matlabcentral/fileexchange/18904-sort-eigenvectors---eigenvalues
+D=diag(sort(diag(D_orig),'descend')); % make diagonal matrix out of sorted diagonal values of input D
+[c, ind]=sort(diag(D_orig),'descend'); % store the indices of which columns the sorted eigenvalues come from
+V=V_orig(:,ind); % arrange the columns in this order
+    
 %%% TO PRINT:
 % Display and print out the first 5 eigenvectors for eyes and non-eyes 
 % (i.e. the eigenvectors with LARGEST 5 eigenvalues, make sure you sort 
 % the eigenvectors by eigenvalues!)
+disp('first 5 eigenvectors for eyes')
+V(:, 1:5);
+
 
 %%% TO DO:
 % Now you have two PCA models: one for eyes, and one for non-eyes. 
@@ -120,6 +141,7 @@ PCAcomp=10;	% Choose 10 to start with, but you will
 % models for each testSet entry, i.e. for each testSet image you 
 % will end up with (2*PCAcomp) coefficients which are the projection 
 % of that test image onto the chosen eigenvectors for eyes and non-eyes.
+
 
 % Since we are going to use the KNN classifier demonstrated above, 
 % you might want to place all the of the test coefficients into one 
