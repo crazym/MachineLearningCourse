@@ -89,30 +89,18 @@ noneyeMean = mean(nonIm, 2);
 % training set. You will do this separately for eye images and non-eye 
 % images. This will produce a set of eigenvectors that represent eye 
 % images, and a different set of eigenvectors for non-eye images.
-training_N = size(eyeIm, 2);
-dimension = size(eyeIm, 1);
-K = zeros(dimension);
-for i=1:training_N
-    difference = eyeIm(:, i) - eyeMean;
-    K = K + difference * difference';
-end
-K = K ./ training_N;
-% dies not work since k need to be < n
-% [V, D] = eigs(K, 500, 'lm');
-[V_orig, D_orig] = eig(K);
 
-% refered to:
-% http://www.mathworks.com/matlabcentral/fileexchange/18904-sort-eigenvectors---eigenvalues
-D=diag(sort(diag(D_orig),'descend')); % make diagonal matrix out of sorted diagonal values of input D
-[c, ind]=sort(diag(D_orig),'descend'); % store the indices of which columns the sorted eigenvalues come from
-V=V_orig(:,ind); % arrange the columns in this order
-    
+[eyeVec, eyeDiag] = computePCA(eyeIm, eyeMean);
+[noneyeVec, noneyeDiag] = computePCA(nonIm, noneyeMean);
+
 %%% TO PRINT:
 % Display and print out the first 5 eigenvectors for eyes and non-eyes 
 % (i.e. the eigenvectors with LARGEST 5 eigenvalues, make sure you sort 
 % the eigenvectors by eigenvalues!)
 disp('first 5 eigenvectors for eyes')
-V(:, 1:5);
+eyeVec(:, 1:5)
+disp('first 5 eigenvectors for non-eyes')
+noneyeVec(:, 1:5)
 
 
 %%% TO DO:
@@ -142,13 +130,19 @@ PCAcomp=10;	% Choose 10 to start with, but you will
 % will end up with (2*PCAcomp) coefficients which are the projection 
 % of that test image onto the chosen eigenvectors for eyes and non-eyes.
 
-
 % Since we are going to use the KNN classifier demonstrated above, 
 % you might want to place all the of the test coefficients into one 
 % matrix.  You would then end up with a matrix that has one ROW for 
 % each image in the testSet, and (2*PCAcomp) COLUMNS, one for each 
 % of the coefficients we computed above.
-
+test_N = size(testSet, 1);
+coeffs = zeros(test_N, 2*PCAcomp);
+for i=1:test_N
+    vEye=testSet(1,:);
+    coeffEye=eyeVec(:,1:PCAcomp)'*(vEye'-eyeMean);
+    coeffNonEye=noneyeVec(:,1:PCAcomp)'*(vEye'-noneyeMean);
+    coeffs(i, :) = [coeffEye' coeffNonEye'];
+end
 
 %%% TO DO:
 % Then do the same for the training data.  That is, compute the 
