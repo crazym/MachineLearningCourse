@@ -227,7 +227,7 @@ for PCAcomp=[5,10,15,25,50]
     fprintf(2,'False positive rate for Low-dimensional data when PCAcomp = %d :\n', PCAcomp);
     disp(falseEye_knnl);
     
-    % Discuss in your report: 
+    % Discuss in your Report: 
     % - Are the results better? worse? is this what you expected?
     % - why do you think the results are like this?
     %
@@ -322,7 +322,7 @@ plot([5,10,15,25,50], fprKNN, 'g*');
 
 legend('correct classification rate', 'false-positive rate');
 xlabel('number of PCA components: PCAcomp');
-ylabel('correct classification rate');
+ylabel('classification rate');
 title('kNN classification rate for the low-dimensional KNN classifier VS the number of PCA components');
 
 % Discuss in your Report:
@@ -342,10 +342,32 @@ plot([5,10,15,25,50], fprPCA, 'g*');
 
 legend('correct classification rate', 'false-positive rate');
 xlabel('number of PCA components: PCAcomp');
-ylabel('correct classification rate');
+ylabel('classification rate');
 title('classification rate for the PCA-reconstruction classifier VS the number of PCA components');
 
+figure(5);clf;
 
+plot([5,10,15,25,50], ccrKNN, 'bs');
+hold on;
+plot([5,10,15,25,50], ccrPCA, 'go');
+
+legend('low-dimensional KNN classifier', 'PCA-reconstruction classifier');
+xlabel('number of PCA components: PCAcomp');
+ylabel('correct classification rate');
+title({'correct classification rate ', 'for the low-dimensional KNN classifier', 
+    ' and PCA-reconstruction classifier', ' VS the number of PCA components'});
+
+figure(6);clf;
+
+plot([5,10,15,25,50], fprKNN, 'bs');
+hold on;
+plot([5,10,15,25,50], fprPCA, 'go');
+
+legend('low-dimensional KNN classifier', 'PCA-reconstruction classifier');
+xlabel('number of PCA components: PCAcomp');
+ylabel('false-positive rate');
+title({'false-positive rate ', 'for the low-dimensional KNN classifier', 
+    ' and PCA-reconstruction classifier', ' VS the number of PCA components'});
 % Discuss in your Report:
 % - Which classifier gives the overall best performance?
 % - What conclusions can you draw about the usefulness of dimensionality
