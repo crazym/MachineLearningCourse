@@ -250,12 +250,26 @@ falseEye_knnl=length(find(classLowDim(size(testEyeIm,2)+1:end)==0))/size(testNon
 % and separately for non-eyes, compute the error between these 2 
 % reconstructions and the original testSet entry, and select the class
 % that yields the smallest error.
-%
-% for i=1:test_N
-%     % vRecon_eye= eyeMean + sum_k (eye_coeff_k * eye_PCA_vector_k);
-%     vRecon_eye= eyeMean + 
-%     vRecon_noneye= nonMean + sum_k (noneye_coeff_k * noneye_PCA_vector_k);
-% end
+
+classPCA = zeros(test_N, 1);
+for i=1:test_N
+    % vRecon_eye= eyeMean + sum_k (eye_coeff_k * eye_PCA_vector_k);
+    vRecon_eye= eyeMean + eyeVec(:, 1:PCAcomp) * coeffsEye(i,:)';
+    % vRecon_noneye= noneyeMean + sum_k (noneye_coeff_k * noneye_PCA_vector_k);
+    vRecon_noneye= noneyeMean + noneyeVec(:, 1:PCAcomp) * coeffsNonEye(i,:)';
+    % compute the square error between two reconstructions and the original
+    % testSet entry
+    dist_eye = norm(vRecon_eye - testSet(i,:)');
+    dist_noneye = norm(vRecon_noneye - testSet(i,:)');
+    % if noneye error is smaller, set the class to 1, o.w. 0
+    classPCA(i) = dist_noneye < dist_eye;
+end
+
+fprintf(2,'PCA correct classification rate for PCAcomp = %d :\n', PCAcomp);
+correctEye_pca=length(find(classPCA(1:size(testEyeIm,2))==0))/size(testEyeIm,2)
+
+fprintf(2,'PCA False positive rate for PCAcomp = %d :\n', PCAcomp);
+falseEye_pca=length(find(classPCA(size(testEyeIm,2)+1:end)==0))/size(testNonIm,2)
 
 %%% TO PRINT:
 %
