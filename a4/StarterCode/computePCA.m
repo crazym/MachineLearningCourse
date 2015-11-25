@@ -19,3 +19,4 @@ function [V, D] = computePCA(imgs, mean)
     V=V_orig(:,ind); % arrange the columns in this order
 
 end
+

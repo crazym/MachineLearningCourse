@@ -44,26 +44,27 @@ testClass=[zeros(size(testEyeIm,2),1)
             ones(size(testNonIm,2),1)];
 
 % Compute matrix of pairwise distances (this takes a while...)
-% d=som_eucdist2(testSet,trainSet);
+d=som_eucdist2(testSet,trainSet);
 % 
-% % Compute kNN results, I simply chose a reasonable value
-% % for K but feel free to change it and play with it...
-% K=5;
-% [C,P]=knn(d,trainClass,K);
-% 
-% % Compute the class from C (we have 0s and 1s so it is easy)
-% class=sum(C,2);	  		% Add how many 1s there are
-% class= (class>(K/2));   % Set to 1 if there are more than K/2
-% 				        % ones. Otherwise it's zero
-% 
-% % Compute classification accuracy: We're interested in 2 numbers:
-% % Correct classification rate - how many eyes were classified as eyes
-% % False-positive rate: how many non-eyes were classified as eyes
-% 
-% fprintf(2,'Correct classification rate:\n');
-% correctEye_knn=length(find(class(1:size(testEyeIm,2))==0))/size(testEyeIm,2)
-% fprintf(2,'False positive rate:\n');
-% falseEye_knn=length(find(class(size(testEyeIm,2)+1:end)==0))/size(testNonIm,2)
+% Compute kNN results, I simply chose a reasonable value
+% for K but feel free to change it and play with it...
+K=5;
+[C,P]=knn(d,trainClass,K);
+
+% Compute the class from C (we have 0s and 1s so it is easy)
+class=sum(C,2);	  		% Add how many 1s there are
+class= (class>(K/2));   % Set to 1 if there are more than K/2
+				        % ones. Otherwise it's zero
+
+% Compute classification accuracy: We're interested in 2 numbers:
+% Correct classification rate - how many eyes were classified as eyes
+% False-positive rate: how many non-eyes were classified as eyes
+
+fprintf(2,'Correct classification rate:\n');
+correctEye_knn=length(find(class(1:size(testEyeIm,2))==0))/size(testEyeIm,2)
+
+fprintf(2,'False positive rate:\n');
+falseEye_knn=length(find(class(size(testEyeIm,2)+1:end)==0))/size(testNonIm,2)
 
 % Keep in mind the above figures! (and the kNN process, you'll
 % have to do it again on the dimension-reduced data later on.
@@ -98,9 +99,9 @@ noneyeMean = mean(nonIm, 2);
 % (i.e. the eigenvectors with LARGEST 5 eigenvalues, make sure you sort 
 % the eigenvectors by eigenvalues!)
 disp('first 5 eigenvectors for eyes')
-eyeVec(:, 1:5)
+eyeVec(:, 1:5);
 disp('first 5 eigenvectors for non-eyes')
-noneyeVec(:, 1:5)
+noneyeVec(:, 1:5);
 
 
 %%% TO DO:
@@ -136,13 +137,15 @@ PCAcomp=10;	% Choose 10 to start with, but you will
 % each image in the testSet, and (2*PCAcomp) COLUMNS, one for each 
 % of the coefficients we computed above.
 test_N = size(testSet, 1);
-coeffs = zeros(test_N, 2*PCAcomp);
+coeffsEye = zeros(test_N, PCAcomp);
+coeffsNonEye = zeros(test_N, PCAcomp);
 for i=1:test_N
-    vEye=testSet(1,:);
-    coeffEye=eyeVec(:,1:PCAcomp)'*(vEye'-eyeMean);
-    coeffNonEye=noneyeVec(:,1:PCAcomp)'*(vEye'-noneyeMean);
-    coeffs(i, :) = [coeffEye' coeffNonEye'];
+    vEye=testSet(i,:);
+    coeffsEye(i, :)=eyeVec(:,1:PCAcomp)'*(vEye'-eyeMean);
+    coeffsNonEye(i, :)=noneyeVec(:,1:PCAcomp)'*(vEye'-noneyeMean);
 end
+
+coeffs = [coeffsEye coeffsNonEye];
 
 %%% TO DO:
 % Then do the same for the training data.  That is, compute the 
@@ -150,7 +153,15 @@ end
 % Then you will have low-dimensional test data and training data
 % ready for the application of KNN, just as we had in the KNN example
 % at the beginning of this script.
-
+train_N = size(trainSet, 1);
+coeffsEye_train = zeros(train_N, PCAcomp);
+coeffsNonEye_train = zeros(train_N, PCAcomp);
+for i=1:train_N
+    vEye=trainSet(i,:);
+    coeffsEye_train(i, :)=eyeVec(:,1:PCAcomp)'*(vEye'-eyeMean);
+    coeffsNonEye_train(i, :)=noneyeVec(:,1:PCAcomp)'*(vEye'-noneyeMean);
+end
+coeffs_train = [coeffsEye_train coeffsNonEye_train];
 %%% TO DO
 % KNN classification: 
 % Repeat the procedure at the beginning of this script, except
@@ -158,6 +169,38 @@ end
 % coefficients for the training and testing data, and the same
 % class labels for the training data that we had before
 %
+
+% Compute classification accuracy: We're interested in 2 numbers:
+% Correct classification rate - how many eyes were classified as eyes
+% False-positive rate: how many non-eyes were classified as eyes
+
+%??????????????? input ?????????
+% [correctEye_lknn, falseEye_lknn] = knnRates(eyeIm, nonIm, testEyeIm, testNonIm);
+% 
+% fprintf(2,'Correct classification rate:\n');
+% disp(correctEye_lknn)
+% fprintf(2,'False positive rate:\n');
+% disp(falseEye_lknn)
+
+% Compute matrix of pairwise distances (this takes a while...)
+dl=som_eucdist2(coeffs,coeffs_train);
+
+[Cl,Pl]=knn(dl,trainClass,K);
+
+% Compute the class from C (we have 0s and 1s so it is easy)
+classLowDim=sum(Cl,2);	  		% Add how many 1s there are
+classLowDim= (classLowDim>(K/2));   % Set to 1 if there are more than K/2
+                        % ones. Otherwise it's zero
+
+% Compute classification accuracy: We're interested in 2 numbers:
+% Correct classification rate - how many eyes were classified as eyes
+% False-positive rate: how many non-eyes were classified as eyes
+fprintf(2,'Correct classification rate for Low-dimensional data:\n');
+correctEye_knnl=length(find(classLowDim(1:size(testEyeIm,2))==0))/size(testEyeIm,2)
+
+fprintf(2,'False positive rate for Low-dimensional data:\n');
+falseEye_knnl=length(find(classLowDim(size(testEyeIm,2)+1:end)==0))/size(testNonIm,2)
+
 
 %%% TO PRINT:
 % Print the classification accuracy and false-positive rates for the
@@ -208,6 +251,11 @@ end
 % reconstructions and the original testSet entry, and select the class
 % that yields the smallest error.
 %
+% for i=1:test_N
+%     % vRecon_eye= eyeMean + sum_k (eye_coeff_k * eye_PCA_vector_k);
+%     vRecon_eye= eyeMean + 
+%     vRecon_noneye= nonMean + sum_k (noneye_coeff_k * noneye_PCA_vector_k);
+% end
 
 %%% TO PRINT:
 %
